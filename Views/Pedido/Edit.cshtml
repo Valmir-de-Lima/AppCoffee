@@ -1,0 +1,79 @@
+@model AppCurso.Models.Pedido
+
+@{
+    ViewData["Title"] = "Editar Pedido";
+}
+
+<h1>Editar</h1>
+
+<h4>Pedido</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Cliente" class="control-label"></label>
+                <input asp-for="Cliente" class="form-control" value="@Model.Cliente" />
+                <span asp-validation-for="Cliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" value="@Model.Total" readonly id="Total" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label>Selecione os produtos:</label>
+                @foreach (var produto in ViewBag.Produtos)
+                {
+                    <div style="display: flex; justify-content: space-between; padding-right: 10px;">
+                        <label>
+                            <input type="checkbox" name="ProdutoSelecionado" value="@produto.Id" data-preco="@produto.Preco"
+                            @(Model.Produtos.Any(p => p.Id == produto.Id) ? "checked" : "") />
+                        </label>
+                        <label>@produto.Descricao</label>
+                        <label>@produto.Preco.ToString("C")</label>
+                    </div>
+                }
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div>
+    <a asp-action="Index">Listagem dos Pedidos</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input[name="ProdutoSelecionado"]').change(function () {
+                calcularTotal();
+            });
+
+            function calcularTotal() {
+                var total = 0;
+
+                $('input[name="ProdutoSelecionado"]:checked').each(function () {
+                    var preco = parseFloat($(this).data('preco'));
+                    if (!isNaN(preco)) {
+                        total += preco;
+                    }
+                });
+
+                $('#Total').val(total.toFixed(2));
+            }
+        });
+    </script>
+}

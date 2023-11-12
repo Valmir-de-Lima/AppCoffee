@@ -1,0 +1,42 @@
+@model IEnumerable<AppCurso.Models.Produto>
+
+@{
+    ViewData["Title"] = "Listagem dos Produtos";
+}
+
+<h1>Listagem de Produtos</h1>
+
+<p>
+    <a asp-action="Create">Criar um novo Produto</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @item.Preco.ToString("C")
+                </td>
+                <td style="color: #df6919;">
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="color: #df6919;">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" style="color: #df6919;">Detalhar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="color: #df6919;">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,64 @@
+@model IEnumerable<AppCurso.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Listagem das Avaliações";
+}
+
+<h1>Listagem de Pagamentos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Avaliacao)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Resposta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Cliente)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @item.Total.ToString("C")
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Avaliacao)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Resposta)
+                </td>
+                <td style="color: #df6919;">
+                    @if (@item.Status == "Pedido recebido. Aguardando avaliacao")
+                    {
+                        <a asp-controller="Pedido" asp-action="Assess" asp-route-id="@item.Id" style="color: #df6919;">
+                            Avaliar
+                        </a>
+                        <a style="color: #df6919;"> | </a>
+                    }
+                    <a asp-controller="Pedido" asp-action="Details" asp-route-id="@item.Id" style="color: #df6919;">
+                        Detalhar Pedido
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

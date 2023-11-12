@@ -1,0 +1,66 @@
+@model AppCurso.Models.Pedido
+
+@{
+    ViewData["Title"] = "Pagar Pedido";
+}
+
+<h1>Pagar</h1>
+
+<h3>Você confirma pagar este Pedido?</h3>
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+    </dl>
+    <div>
+        <h5>Selecione a Forma de Pagamento</h5>
+        <select name="forma" class="form-control">
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="PIX">PIX</option>
+        </select>
+    </div>
+    <br>
+    <form asp-action="PaymentCreate" asp-route-id="@Model.Id" method="post">
+        <input type="hidden" name="formaPagamento" id="formaPagamentoHidden" />
+        <input type="submit" value="Pagar" class="btn btn-danger" />
+    </form>
+</div>
+<hr />
+<div>
+    <a asp-action="Index">Voltar para a listagem</a>
+</div>
+
+@section scripts {
+    <script>
+        document.getElementById('formaPagamentoHidden').value = document.querySelector('select[name="forma"]').value;
+        document.addEventListener('DOMContentLoaded', function () {
+            var formaPagamentoHidden = document.getElementById('formaPagamentoHidden');
+            var formaComboBox = document.querySelector('select[name="forma"]');
+
+            // Adiciona um ouvinte de evento para o evento de alteração na combobox
+            formaComboBox.addEventListener('change', function () {
+                formaPagamentoHidden.value = formaComboBox.value;
+            });
+        });
+    </script>
+}
+</script>

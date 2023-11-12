@@ -1,0 +1,56 @@
+@model IEnumerable<AppCurso.Models.Pagamento>
+
+@{
+    ViewData["Title"] = "Listagem dos Pagamentos";
+}
+
+<h1>Listagem de Pagamentos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.PedidoId)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.FormaPagamento)
+            </th>
+            <th style="color: white;">
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.Cliente)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.PedidoId)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(modelItem => item.FormaPagamento)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @item.Total.ToString("C")
+                </td>
+                <td style="color: #df6919;">
+                    <a asp-controller="Pedido" asp-action="Details" asp-route-id="@item.PedidoId"
+                        style="color: #df6919;">Detalhar Pedido</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

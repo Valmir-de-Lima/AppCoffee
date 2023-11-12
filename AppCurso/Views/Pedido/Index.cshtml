@@ -1,0 +1,91 @@
+@model IEnumerable<AppCurso.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Listagem dos Pedidos";
+}
+
+<h1>Listagem dos Pedidos</h1>
+
+<p>
+    <a asp-action="Create">Criar um novo Pedido</a>
+</p>
+@foreach (var pedido in Model)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Cliente)
+                </th>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Status)
+                </th>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Total)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(model => pedido.Id)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(model => pedido.Cliente)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(model => pedido.Status)
+                </td>
+                <td style="color: #DCDCDC;">
+                    @Html.DisplayFor(model => pedido.Total)
+                </td>
+            </tr>
+            <tr>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Produtos.First().Id)
+                </th>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Produtos.First().Descricao)
+                </th>
+                <th style="color: white;">
+                    @Html.DisplayNameFor(model => model.First().Produtos.First().Preco)
+                </th>
+            </tr>
+    @foreach (var produto in pedido.Produtos)
+    {
+                <tr>
+                    <td style="color: #DCDCDC;">
+                @Html.DisplayFor(model => produto.Id)
+                    </td>
+                    <td style="color: #DCDCDC;">
+                @Html.DisplayFor(model => produto.Descricao)
+                    </td>
+                    <td style="color: #DCDCDC;">
+                @produto.Preco.ToString("C")
+                    </td>
+                </tr>
+    }
+            <td style="color: #df6919;">
+                @if (@pedido.Status == "Pedido criado. Aguardando pagamento")
+                {
+                    <a asp-action="Edit" asp-route-id="@pedido.Id" style="color: #df6919;">Editar</a><a style="color: #df6919;">  |  </a>
+                    <a asp-action="Delete" asp-route-id="@pedido.Id" style="color: #df6919;">Deletar</a><a style="color: #df6919;">  |  </a>
+                    <a asp-action="Payment" asp-route-id="@pedido.Id" style="color: #df6919;">Pagar</a><a style="color: #df6919;">  |  </a>
+                }
+                @if (@pedido.Status == "Pedido pago. Aguardando recebimento")
+                {
+                    <a asp-action="Recept" asp-route-id="@pedido.Id" style="color: #df6919;">Receber</a><a style="color: #df6919;">  |  </a>
+                }
+                @if (@pedido.Status == "Pedido recebido. Aguardando avaliacao")
+                {
+                    <a asp-action="Recept" asp-route-id="@pedido.Id" style="color: #df6919;">Receber</a><a style="color: #df6919;">  |  </a>
+                }
+
+                <a asp-action="Details" asp-route-id="@pedido.Id" style="color: #df6919;">Detalhar</a>
+            </td>
+        </tbody>
+    </table>
+}
