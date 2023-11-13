@@ -387,7 +387,7 @@ namespace AppCurso
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Avaliacao");
             }
             catch (DbUpdateConcurrencyException)
             {
