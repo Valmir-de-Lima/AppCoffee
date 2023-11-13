@@ -12,7 +12,11 @@
         <h5 class="card-text">Crie, edite, liste e exclua</h5>
         <div class="card-footer">
             <div class="d-grid gap-2">
-                <a href="Produto" class="btn btn-primary" type="button">Produto</a>
+                @if (@User.Identity!.Name == "gerente@coffee.com")
+                {
+                    <a href="Produto" class="btn btn-primary" type="button">Produto</a>
+
+                }
                 <a href="Pedido" class="btn btn-primary" type="button">Pedido</a>
                 <a href="Pagamento" class="btn btn-primary" type="button">Pagamento</a>
                 <a href="Avaliacao" class="btn btn-primary" type="button">Avaliação</a>
