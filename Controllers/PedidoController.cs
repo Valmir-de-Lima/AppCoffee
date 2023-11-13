@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AppCurso.Data;
 using AppCurso.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing.Drawing2D;
+using OpenAI_API;
 
 namespace AppCurso
 {
@@ -367,7 +369,7 @@ namespace AppCurso
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssessCreate(int id, string avaliacao, string resposta)
+        public async Task<IActionResult> AssessCreate(int id, string avaliacao)
         {
             try
             {
@@ -381,7 +383,7 @@ namespace AppCurso
                 }
 
                 pedido.Avaliacao = avaliacao;
-                pedido.Resposta = resposta;
+                pedido.Resposta = await GetOpenAIResponse(avaliacao);
                 pedido.Status = "Pedido recebido e avaliado";
 
                 _context.Update(pedido);
@@ -401,5 +403,19 @@ namespace AppCurso
                 }
             }
         }
+
+        public async Task<string> GetOpenAIResponse(string avaliacao)
+        {
+            var resposta = "";
+
+            OpenAIAPI api = new OpenAIAPI("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");
+            var chat = api.Chat.CreateConversation();
+
+            chat.AppendSystemMessage("Você é um atendente de uma cafeteria que responda a avaliação do cliente");
+            chat.AppendUserInput(avaliacao);
+            resposta = await chat.GetResponseFromChatbotAsync();
+            return resposta;
+        }
     }
 }
+
