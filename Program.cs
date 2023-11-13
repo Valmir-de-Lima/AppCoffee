@@ -37,6 +37,8 @@ cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+Configuration.OPENAI = builder.Configuration.GetValue<string>("OpenAI")!;
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

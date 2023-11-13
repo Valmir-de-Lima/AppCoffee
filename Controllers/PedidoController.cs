@@ -408,10 +408,10 @@ namespace AppCurso
         {
             var resposta = "";
 
-            OpenAIAPI api = new OpenAIAPI("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");
+            OpenAIAPI api = new OpenAIAPI(Configuration.OPENAI);
             var chat = api.Chat.CreateConversation();
 
-            chat.AppendSystemMessage("Você é um atendente de uma cafeteria que responda a avaliação do cliente");
+            chat.AppendSystemMessage("Você é um atendente de uma cafeteria que responda a avaliação do cliente, utilizando 3 frases curtas, no máximo");
             chat.AppendUserInput(avaliacao);
             resposta = await chat.GetResponseFromChatbotAsync();
             return resposta;
