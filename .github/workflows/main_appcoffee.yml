@@ -54,4 +54,4 @@ jobs:
           app-name: 'AppCoffee'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1022EBA83EAC4BBB9D12463EA47AFDD7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_25FEC634530F4241AB1878E5DA15F13A }}
