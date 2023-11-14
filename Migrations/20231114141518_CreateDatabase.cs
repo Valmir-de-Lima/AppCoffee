@@ -215,6 +215,7 @@ namespace AppCurso.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Produto = table.Column<int>(type: "INTEGER", nullable: false),
                     Descricao = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
                     Preco = table.Column<decimal>(type: "TEXT", nullable: false),
                     Quantidade = table.Column<int>(type: "INTEGER", nullable: false),

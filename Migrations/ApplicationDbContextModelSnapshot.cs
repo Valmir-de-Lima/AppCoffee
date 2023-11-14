@@ -141,6 +141,10 @@ namespace AppCurso.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Preco");
 
+                    b.Property<int>("ProdutoId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Produto");
+
                     b.Property<int>("Quantidade")
                         .HasColumnType("INTEGER")
                         .HasColumnName("Quantidade");

@@ -1110,7 +1110,9 @@ C:\dotnet\AppCurso\obj\Debug\net6.0\ref\AppCurso.dll
 C:\dotnet\AppCurso\bin\Debug\net6.0\app.db
 C:\dotnet\AppCoffee\bin\Debug\net6.0\appsettings.Development.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\appsettings.json
+C:\dotnet\AppCoffee\bin\Debug\net6.0\global.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.staticwebassets.runtime.json
+C:\dotnet\AppCoffee\bin\Debug\net6.0\app.db
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.exe
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.deps.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.runtimeconfig.json
@@ -1372,11 +1374,6 @@ C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.MvcApplicationPartsAssemblyInfo.cs
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.MvcApplicationPartsAssemblyInfo.cache
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.RazorAssemblyInfo.cache
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.RazorAssemblyInfo.cs
-C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets\msbuild.AppCurso.Microsoft.AspNetCore.StaticWebAssets.props
-C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets\msbuild.build.AppCurso.props
-C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.AppCurso.props
-C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.AppCurso.props
-C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets.pack.json
 C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets.build.json
 C:\dotnet\AppCoffee\obj\Debug\net6.0\staticwebassets.development.json
 C:\dotnet\AppCoffee\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
@@ -1388,4 +1385,3 @@ C:\dotnet\AppCoffee\obj\Debug\net6.0\refint\AppCurso.dll
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.pdb
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.genruntimeconfig.cache
 C:\dotnet\AppCoffee\obj\Debug\net6.0\ref\AppCurso.dll
-C:\dotnet\AppCoffee\bin\Debug\net6.0\app.db

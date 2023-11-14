@@ -1,8 +1,39 @@
-@model AppCurso.Models.Pedido
+@model AppCurso.ViewModels.PedidoViewModel
 
 @{
     ViewData["Title"] = "Criar Pedido";
 }
+
+<style>
+    /* Adicione estilos personalizados aqui */
+    .table-container {
+        max-height: 250px;
+        /* Altura máxima da tabela */
+        overflow-y: auto;
+        /* Adiciona uma barra de rolagem vertical */
+    }
+
+    .table th[hidden],
+    .table td[hidden] {
+        display: none;
+    }
+
+    .table th:not([hidden]),
+    .table td:not([hidden]) {
+        background-color: #f2f2f2;
+        /* Cor de fundo para campos não editáveis */
+    }
+
+    .table td:not([hidden]) input[readonly] {
+        background-color: #e6e6e6;
+        /* Cor de fundo para campos de leitura apenas */
+    }
+
+    .table td:not([hidden]) input {
+        width: 60px;
+        /* Ajuste o tamanho da coluna ValorTotal conforme necessário */
+    }
+</style>
 
 <h1>Criar</h1>
 
@@ -10,36 +41,65 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Cliente" class="control-label"></label>
                 <input asp-for="Cliente" class="form-control" value="@User.Identity?.Name" />
                 <span asp-validation-for="Cliente" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" value="0.00" readonly id="Total" />
-                <span asp-validation-for="Total" class="text-danger"></span>
+                <label asp-for="TotalPedido" class="control-label">Total Pedido</label>
+                <input asp-for="TotalPedido" class="form-control" value="0.00" readonly id="Total" />
+                <span asp-validation-for="TotalPedido" class="text-danger"></span>
             </div>
-            <br>
+
             <div class="form-group">
-                <label>Selecione os produtos:</label>
-                @foreach (var produto in ViewBag.Produtos)
-                {
-                    <div style="display: flex; justify-content: space-between; padding-right: 10px;">
-                        <input type="hidden" name="ProdutoId" value="@produto.Id" />
-                        <label>
-                            @produto.Descricao - @produto.Preco.ToString("C")
-                        </label>
-                        <input type="number" name="Quantidade" min="0" max="10" value="0" data-preco="@produto.Preco" />
-                        <input type="text" name="ValorTotal" id="ValorTotal" value="0.00" readonly />
-                    </div>
-                }
+                <label>Adicione a quantidade dos produtos:</label>
+                <div class="table-responsive table-container">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th hidden></th>
+                                <th>Descrição</th>
+                                <th>Preço</th>
+                                <th>Quantidade</th>
+                                <th>Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var produto in ViewBag.Produtos)
+                            {
+                                <tr>
+                                    <td hidden>
+                                        <input type="hidden" name="Produtos.Index" value="@produto.Id" />
+                                        <input type="hidden" name="Produtos[@produto.Id].ProdutoId" value="@produto.Id" />
+                                        <input type="hidden" name="Produtos[@produto.Id].Descricao"
+                                            value="@produto.Descricao" />
+                                        <input type="hidden" name="Produtos[@produto.Id].Preco" value="@produto.Preco" />
+                                    </td>
+                                    <td>@produto.Descricao</td>
+                                    <td>@produto.Preco.ToString("C")</td>
+                                    <td>
+                                        <input type="number" name="Produtos[@produto.Id].Quantidade" min="0" max="10"
+                                            value="0" data-preco="@produto.Preco" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="Produtos[@produto.Id].ValorTotal" value="0.00" readonly />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
             <br>
+
             <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-primary" id="btnCriar" disabled />
             </div>
         </form>
     </div>
@@ -58,14 +118,14 @@
 
     <script>
         $(document).ready(function () {
-            $('input[name="Quantidade"]').change(function () {
+            $('input[name^="Produtos["]').change(function () {
                 calcularTotais();
             });
 
             function calcularTotais() {
                 var totalPedido = 0;
 
-                $('input[name="Quantidade"]').each(function () {
+                $('input[name^="Produtos["]').each(function () {
                     var quantidade = parseInt($(this).val());
                     var preco = parseFloat($(this).data('preco'));
 
@@ -74,14 +134,17 @@
                         totalPedido += totalProduto;
 
                         // Encontrar elementos relacionados ao cálculo do total do produto
-                        var divProduto = $(this).closest('div');
-                        var totalProdutoElement = divProduto.find('input[name="ValorTotal"]');
+                        var trProduto = $(this).closest('tr');
+                        var totalProdutoElement = trProduto.find('input[name^="Produtos["][name$="].ValorTotal"]');
                         totalProdutoElement.val(totalProduto.toFixed(2));
                     }
                 });
 
                 // Atualizar o valor total do pedido
                 $('#Total').val(totalPedido.toFixed(2));
+
+                // Habilitar ou desabilitar o botão Criar com base no valor total do pedido
+                $('#btnCriar').prop('disabled', totalPedido <= 0);
             }
         });
     </script>

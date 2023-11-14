@@ -10,6 +10,7 @@ using AppCurso.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing.Drawing2D;
 using OpenAI_API;
+using AppCurso.ViewModels;
 
 namespace AppCurso
 {
@@ -75,36 +76,32 @@ namespace AppCurso
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cliente,Total")] Pedido pedido, string[] ProdutoSelecionado)
+        public async Task<IActionResult> Create(PedidoViewModel pedidoViewModel)
         {
-            if (ModelState.IsValid)
+            var pedido = new Pedido();
+            pedido.Cliente = pedidoViewModel.Cliente;
+            pedido.Total = pedidoViewModel.TotalPedido;
+            pedido.Status = "Pedido criado. Aguardando pagamento";
+
+            var produtosPedidos = new List<ProdutoPedido>();
+            foreach (var produto in pedidoViewModel.Produtos)
             {
-                if (ProdutoSelecionado != null && ProdutoSelecionado.Any())
+                var produtoPedido = new ProdutoPedido();
+                if (produto.ValorTotal > 0)
                 {
-                    // Aqui você pode usar ProdutosSelecionados para obter os IDs dos produtos selecionados
-                    // e atribuir esses produtos ao pedido da maneira desejada.
-
-                    List<ProdutoPedido> produtosSelecionados = await _context.ProdutoPedidos?
-                        .Where(p => ProdutoSelecionado.Contains(p.Id.ToString()))
-                        .ToListAsync()!;
-
-                    // Exemplo: atribuir a lista de produtos selecionados ao pedido
-                    pedido.ProdutoPedidos = produtosSelecionados;
-
-                    decimal total = 0;
-                    foreach (ProdutoPedido produto in produtosSelecionados.ToList())
-                    {
-                        total += produto.Preco;
-                    }
-                    pedido.Total = total;
+                    produtoPedido.ProdutoId = produto.ProdutoId;
+                    produtoPedido.Descricao = produto.Descricao;
+                    produtoPedido.Preco = produto.Preco;
+                    produtoPedido.Quantidade = produto.Quantidade;
+                    produtoPedido.Total = produto.ValorTotal;
+                    produtosPedidos.Add(produtoPedido);
                 }
-                pedido.Status = "Pedido criado. Aguardando pagamento";
-
-                _context.Add(pedido);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(pedido);
+            pedido.ProdutoPedidos = produtosPedidos.ToList();
+
+            _context.Add(pedido);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Modulo/Edit/5
@@ -417,7 +414,7 @@ namespace AppCurso
             OpenAIAPI api = new OpenAIAPI(Configuration.OPENAI);
             var chat = api.Chat.CreateConversation();
 
-            chat.AppendSystemMessage("Você é um atendente de uma cafeteria que responda a avaliação do cliente, utilizando 3 frases curtas, no máximo");
+            chat.AppendSystemMessage("Você é um atendente de uma cafeteria que responda a avaliação do cliente");
             chat.AppendUserInput(avaliacao);
             resposta = await chat.GetResponseFromChatbotAsync();
             return resposta;

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppCurso.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231114003616_CreateDatabase")]
+    [Migration("20231114141518_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,6 +142,10 @@ namespace AppCurso.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("TEXT")
                         .HasColumnName("Preco");
+
+                    b.Property<int>("ProdutoId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Produto");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("INTEGER")

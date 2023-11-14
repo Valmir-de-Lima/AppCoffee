@@ -18,6 +18,11 @@ namespace AppCurso.Data.Mappings
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.ProdutoId)
+                 .IsRequired()  // NT NULL
+                 .HasColumnName("Produto")
+                 .HasColumnType("INTEGER");
+
             // Propriedades            
             builder.Property(x => x.Descricao)
                  .IsRequired()  // NT NULL

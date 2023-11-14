@@ -23,7 +23,7 @@
                     @Html.DisplayNameFor(model => model.First().Status)
                 </th>
                 <th style="color: white;">
-                    @Html.DisplayNameFor(model => model.First().Total)
+                    Total Pedido
                 </th>
             </tr>
         </thead>
@@ -44,26 +44,32 @@
             </tr>
             <tr>
                 <th style="color: white;">
-                    Id
-                </th>
-                <th style="color: white;">
                     Descrição
                 </th>
                 <th style="color: white;">
                     Preço
                 </th>
+                <th style="color: white;">
+                    Quantidade
+                </th>
+                <th style="color: white;">
+                    Valor Total
+                </th>
             </tr>
-    @foreach (var produto in @ViewBag.Produtos)
+    @foreach (var produto in pedido.ProdutoPedidos)
     {
                 <tr>
-                    <td style="color: #DCDCDC;">
-                        @produto.Id
-                    </td>
                     <td style="color: #DCDCDC;">
                         @produto.Descricao
                     </td>
                     <td style="color: #DCDCDC;">
                         @produto.Preco.ToString("C")
+                    </td>
+                    <td style="color: #DCDCDC;">
+                        @produto.Quantidade
+                    </td>
+                    <td style="color: #DCDCDC;">
+                        @produto.Total.ToString("C")
                     </td>
                 </tr>
     }

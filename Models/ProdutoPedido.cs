@@ -10,6 +10,10 @@ public class ProdutoPedido
     [Required(ErrorMessage = "Campo obrigatório")]
     public int Id { get; set; }
 
+    [DisplayName("Produto")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public int ProdutoId { get; set; }
+
     [DisplayName("Descrição")]
     [Required(ErrorMessage = "Campo obrigatório")]
     public string Descricao { get; set; } = "";
