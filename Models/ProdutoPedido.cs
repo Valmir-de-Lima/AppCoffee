@@ -27,7 +27,7 @@ public class ProdutoPedido
     [Required(ErrorMessage = "Campo obrigatório")]
     public int Quantidade { get; set; }
 
-    [DisplayName("Preço")]
+    [DisplayName("Total")]
     [Required(ErrorMessage = "Campo obrigatório")]
     [PrecoValido(ErrorMessage = "Formato inválido. Use um número com até duas casas decimais.")]
     public decimal Total { get; set; }

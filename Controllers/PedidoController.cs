@@ -120,73 +120,90 @@ namespace AppCurso
                 return NotFound();
             }
 
-            // Obtenha a lista de produtos do banco de dados
+            var pedidoViewModel = new PedidoViewModel();
+            pedidoViewModel.Id = pedido.Id;
+            pedidoViewModel.Cliente = pedido.Cliente;
+            pedidoViewModel.TotalPedido = pedido.Total;
+
+            var produtoViewModels = new List<ProdutoViewModel>();
             var produtos = _context.Produtos!.ToList();
+            foreach (var produto in produtos)
+            {
+                var produtoViewModel = new ProdutoViewModel();
+                produtoViewModel.ProdutoId = produto.Id;
+                produtoViewModel.Descricao = produto.Descricao;
+                produtoViewModel.Preco = produto.Preco;
+                foreach (var item in pedido.ProdutoPedidos)
+                {
+                    if (item.ProdutoId == produto.Id)
+                    {
+                        produtoViewModel.Quantidade = item.Quantidade;
+                        produtoViewModel.ValorTotal = item.Total;
+                    }
+                }
+                produtoViewModels.Add(produtoViewModel);
+            }
 
-            // Armazene o SelectList em ViewBag para uso na visão
-            ViewBag.Produtos = produtos;
+            pedidoViewModel.Produtos = produtoViewModels.ToList();
 
-            return View(pedido);
+            return View(pedidoViewModel);
         }
 
         // POST: Modulo/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Cliente,Total,Produtos")] Pedido pedido, string[] ProdutoSelecionado)
+        public async Task<IActionResult> Edit(PedidoViewModel pedidoViewModel)
         {
-            if (id != pedido.Id)
+            try
             {
-                return NotFound();
-            }
+                Pedido? pedido = await _context.Pedidos!
+                            .Include(p => p.ProdutoPedidos)
+                            .FirstOrDefaultAsync(m => m.Id == pedidoViewModel.Id);
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (pedido != null)
                 {
-                    if (ProdutoSelecionado != null && ProdutoSelecionado.Any())
+                    // Atualizar as propriedades do pedido com os valores do ViewModel
+                    pedido.Cliente = pedidoViewModel.Cliente;
+                    pedido.Total = pedidoViewModel.TotalPedido;
+
+                    // Limpar os produtos associados ao pedido
+                    pedido.ProdutoPedidos.Clear();
+
+                    // Adicionar os novos produtos ao pedido
+                    foreach (var produto in pedidoViewModel.Produtos)
                     {
-                        // Aqui você pode usar ProdutosSelecionados para obter os IDs dos produtos selecionados
-                        // e atribuir esses produtos ao pedido da maneira desejada.
-
-                        List<ProdutoPedido> produtosSelecionados = await _context.ProdutoPedidos?
-                            .Where(p => ProdutoSelecionado.Contains(p.Id.ToString()))
-                            .ToListAsync()!;
-
-                        // Exemplo: atribuir a lista de produtos selecionados ao pedido
-                        pedido.ProdutoPedidos = produtosSelecionados;
-
-                        decimal total = 0;
-                        foreach (ProdutoPedido produto in produtosSelecionados.ToList())
+                        if (produto.ValorTotal > 0)
                         {
-                            total += produto.Preco;
+                            var produtoPedido = new ProdutoPedido
+                            {
+                                ProdutoId = produto.ProdutoId,
+                                Descricao = produto.Descricao,
+                                Preco = produto.Preco,
+                                Quantidade = produto.Quantidade,
+                                Total = produto.ValorTotal
+                            };
+
+                            pedido.ProdutoPedidos.Add(produtoPedido);
                         }
-                        pedido.Total = total;
                     }
 
-                    Pedido? ped = await _context.Pedidos!
-                                .Include(p => p.ProdutoPedidos)
-                                .FirstOrDefaultAsync(m => m.Id == id);
-                    ped!.Cliente = pedido.Cliente;
-                    ped.Total = pedido.Total;
-                    ped.ProdutoPedidos = pedido.ProdutoPedidos.ToList();
+                    _context.Update(pedido);
+                }
 
-                    _context.Update(ped);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PedidoExists(pedido.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(pedido);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PedidoExists(pedidoViewModel.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Modulo/Delete/5
