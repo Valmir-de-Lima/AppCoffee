@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using AppCurso.ViewModels;
 
 namespace AppCurso
 {
@@ -29,9 +30,10 @@ namespace AppCurso
 
         // GET: Curso
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Usuarios!.ToListAsync());
+            var usuarioViewModel = new UsuarioViewModel();
+            return View(usuarioViewModel);
         }
 
         [HttpPost]
@@ -53,11 +55,10 @@ namespace AppCurso
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
-            return _context.Usuarios != null ?
-                        View(await _context.Usuarios.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
+            var usuarioViewModel = new UsuarioViewModel();
+            return View(usuarioViewModel);
         }
 
         [HttpPost]
