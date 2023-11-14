@@ -1111,7 +1111,6 @@ C:\dotnet\AppCurso\bin\Debug\net6.0\app.db
 C:\dotnet\AppCoffee\bin\Debug\net6.0\appsettings.Development.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\appsettings.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.staticwebassets.runtime.json
-C:\dotnet\AppCoffee\bin\Debug\net6.0\app.db
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.exe
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.deps.json
 C:\dotnet\AppCoffee\bin\Debug\net6.0\AppCurso.runtimeconfig.json
@@ -1389,3 +1388,4 @@ C:\dotnet\AppCoffee\obj\Debug\net6.0\refint\AppCurso.dll
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.pdb
 C:\dotnet\AppCoffee\obj\Debug\net6.0\AppCurso.genruntimeconfig.cache
 C:\dotnet\AppCoffee\obj\Debug\net6.0\ref\AppCurso.dll
+C:\dotnet\AppCoffee\bin\Debug\net6.0\app.db
