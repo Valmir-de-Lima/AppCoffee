@@ -50,11 +50,11 @@ namespace AppCurso.Data.Mappings
                  .HasColumnType("INTEGER");
 
 
-            // Relacionamento M:N com a tabela de junção
+            // Relacionamento um (Pedido) para muitos (ProdutoPedido)
             builder
-                .HasMany(pedido => pedido.Produtos)
-                .WithMany(produto => produto.Pedidos)
-                .UsingEntity(j => j.ToTable("PedidoProduto"));
+                .HasMany(pedido => pedido.ProdutoPedidos)
+                .WithOne(produtoPedido => produtoPedido.Pedido)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Indice auxiliar
             builder

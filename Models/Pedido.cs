@@ -32,7 +32,7 @@ public class Pedido
     [DisplayName("Recebido")]
     public bool Recebido { get; set; }
 
-    public List<Produto> Produtos { get; set; } = new List<Produto>();
+    public List<ProdutoPedido> ProdutoPedidos { get; set; } = new List<ProdutoPedido>();
 
     public int PagamentoId { get; set; }
     public Pagamento? Pagamento { get; set; }

@@ -26,11 +26,17 @@ namespace AppCurso
         // GET: Modulo
         public async Task<IActionResult> Index()
         {
-            var list = _context.Pedidos?
-                            .Include(p => p.Produtos)
+            var pedidos = _context.Pedidos?
+                            .Include(p => p.ProdutoPedidos)
                             .Where(x => x.Cliente == User.Identity!.Name)
                             .ToListAsync();
-            return View(await list!);
+
+            // Obtenha a lista de produtos do banco de dados
+            var produtos = _context.Produtos!.ToList();
+            // Armazene o SelectList em ViewBag para uso na visão
+            ViewBag.Produtos = produtos;
+
+            return View(await pedidos!);
         }
 
         // GET: Modulo/Details/5
@@ -42,7 +48,7 @@ namespace AppCurso
             }
 
             var pedido = await _context.Pedidos
-                .Include(p => p.Produtos)
+                .Include(p => p.ProdutoPedidos)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedido == null)
@@ -78,15 +84,15 @@ namespace AppCurso
                     // Aqui você pode usar ProdutosSelecionados para obter os IDs dos produtos selecionados
                     // e atribuir esses produtos ao pedido da maneira desejada.
 
-                    List<Produto> produtosSelecionados = await _context.Produtos?
+                    List<ProdutoPedido> produtosSelecionados = await _context.ProdutoPedidos?
                         .Where(p => ProdutoSelecionado.Contains(p.Id.ToString()))
                         .ToListAsync()!;
 
                     // Exemplo: atribuir a lista de produtos selecionados ao pedido
-                    pedido.Produtos = produtosSelecionados;
+                    pedido.ProdutoPedidos = produtosSelecionados;
 
                     decimal total = 0;
-                    foreach (Produto produto in pedido.Produtos.ToList())
+                    foreach (ProdutoPedido produto in produtosSelecionados.ToList())
                     {
                         total += produto.Preco;
                     }
@@ -110,7 +116,7 @@ namespace AppCurso
             }
 
             var pedido = await _context.Pedidos
-                                .Include(p => p.Produtos)
+                                .Include(p => p.ProdutoPedidos)
                                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedido == null)
             {
@@ -145,15 +151,15 @@ namespace AppCurso
                         // Aqui você pode usar ProdutosSelecionados para obter os IDs dos produtos selecionados
                         // e atribuir esses produtos ao pedido da maneira desejada.
 
-                        List<Produto> produtosSelecionados = await _context.Produtos?
+                        List<ProdutoPedido> produtosSelecionados = await _context.ProdutoPedidos?
                             .Where(p => ProdutoSelecionado.Contains(p.Id.ToString()))
                             .ToListAsync()!;
 
                         // Exemplo: atribuir a lista de produtos selecionados ao pedido
-                        pedido.Produtos = produtosSelecionados;
+                        pedido.ProdutoPedidos = produtosSelecionados;
 
                         decimal total = 0;
-                        foreach (Produto produto in pedido.Produtos.ToList())
+                        foreach (ProdutoPedido produto in produtosSelecionados.ToList())
                         {
                             total += produto.Preco;
                         }
@@ -161,11 +167,11 @@ namespace AppCurso
                     }
 
                     Pedido? ped = await _context.Pedidos!
-                                .Include(p => p.Produtos)
+                                .Include(p => p.ProdutoPedidos)
                                 .FirstOrDefaultAsync(m => m.Id == id);
                     ped!.Cliente = pedido.Cliente;
                     ped.Total = pedido.Total;
-                    ped.Produtos = pedido.Produtos.ToList();
+                    ped.ProdutoPedidos = pedido.ProdutoPedidos.ToList();
 
                     _context.Update(ped);
                     await _context.SaveChangesAsync();
@@ -237,7 +243,7 @@ namespace AppCurso
             }
 
             var pedido = await _context.Pedidos
-                                .Include(p => p.Produtos)
+                                .Include(p => p.ProdutoPedidos)
                                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedido == null)
             {
@@ -254,7 +260,7 @@ namespace AppCurso
             try
             {
                 Pedido? pedido = await _context.Pedidos!
-                    .Include(p => p.Produtos)
+                    .Include(p => p.ProdutoPedidos)
                     .FirstOrDefaultAsync(m => m.Id == id);
 
                 if (pedido == null)
@@ -303,7 +309,7 @@ namespace AppCurso
             }
 
             var pedido = await _context.Pedidos
-                                .Include(p => p.Produtos)
+                                .Include(p => p.ProdutoPedidos)
                                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedido == null)
             {
@@ -320,7 +326,7 @@ namespace AppCurso
             try
             {
                 Pedido? pedido = await _context.Pedidos!
-                    .Include(p => p.Produtos)
+                    .Include(p => p.ProdutoPedidos)
                     .FirstOrDefaultAsync(m => m.Id == id);
 
                 if (pedido == null)
@@ -357,7 +363,7 @@ namespace AppCurso
             }
 
             var pedido = await _context.Pedidos
-                                .Include(p => p.Produtos)
+                                .Include(p => p.ProdutoPedidos)
                                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pedido == null)
             {
@@ -374,7 +380,7 @@ namespace AppCurso
             try
             {
                 Pedido? pedido = await _context.Pedidos!
-                    .Include(p => p.Produtos)
+                    .Include(p => p.ProdutoPedidos)
                     .FirstOrDefaultAsync(m => m.Id == id);
 
                 if (pedido == null)

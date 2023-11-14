@@ -5,7 +5,6 @@
 }
 
 <h1>Listagem dos Pedidos</h1>
-
 <p>
     <a asp-action="Create">Criar um novo Pedido</a>
 </p>
@@ -45,41 +44,41 @@
             </tr>
             <tr>
                 <th style="color: white;">
-                    @Html.DisplayNameFor(model => model.First().Produtos.First().Id)
+                    Id
                 </th>
                 <th style="color: white;">
-                    @Html.DisplayNameFor(model => model.First().Produtos.First().Descricao)
+                    Descrição
                 </th>
                 <th style="color: white;">
-                    @Html.DisplayNameFor(model => model.First().Produtos.First().Preco)
+                    Preço
                 </th>
             </tr>
-    @foreach (var produto in pedido.Produtos)
+    @foreach (var produto in @ViewBag.Produtos)
     {
                 <tr>
                     <td style="color: #DCDCDC;">
-                @Html.DisplayFor(model => produto.Id)
+                        @produto.Id
                     </td>
                     <td style="color: #DCDCDC;">
-                @Html.DisplayFor(model => produto.Descricao)
+                        @produto.Descricao
                     </td>
                     <td style="color: #DCDCDC;">
-                @produto.Preco.ToString("C")
+                        @produto.Preco.ToString("C")
                     </td>
                 </tr>
     }
             <td style="color: #df6919;">
-                @if (@pedido.Status == "Pedido criado. Aguardando pagamento")
+                @if (pedido.Status == "Pedido criado. Aguardando pagamento")
                 {
                     <a asp-action="Edit" asp-route-id="@pedido.Id" style="color: #df6919;">Editar</a><a style="color: #df6919;">  |  </a>
                     <a asp-action="Delete" asp-route-id="@pedido.Id" style="color: #df6919;">Deletar</a><a style="color: #df6919;">  |  </a>
                     <a asp-action="Payment" asp-route-id="@pedido.Id" style="color: #df6919;">Pagar</a><a style="color: #df6919;">  |  </a>
                 }
-                @if (@pedido.Status == "Pedido pago. Aguardando recebimento")
+                @if (pedido.Status == "Pedido pago. Aguardando recebimento")
                 {
                     <a asp-action="Recept" asp-route-id="@pedido.Id" style="color: #df6919;">Receber</a><a style="color: #df6919;">  |  </a>
                 }
-                @if (@pedido.Status == "Pedido recebido. Aguardando avaliacao")
+                @if (pedido.Status == "Pedido recebido. Aguardando avaliacao")
                 {
                     <a asp-action="Assess" asp-route-id="@pedido.Id" style="color: #df6919;">Avaliar</a><a style="color: #df6919;">  |  </a>
                 }

@@ -8,8 +8,8 @@ namespace AppCurso.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<Curso>? Cursos { get; set; }
     public DbSet<Pedido>? Pedidos { get; set; }
+    public DbSet<ProdutoPedido>? ProdutoPedidos { get; set; }
     public DbSet<Produto>? Produtos { get; set; }
     public DbSet<Pagamento>? Pagamentos { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new ProdutoMap());
         modelBuilder.ApplyConfiguration(new PedidoMap());
-        modelBuilder.ApplyConfiguration(new CursoMap());
+        modelBuilder.ApplyConfiguration(new ProdutoPedidoMap());
         modelBuilder.ApplyConfiguration(new PagamentoMap());
     }
 

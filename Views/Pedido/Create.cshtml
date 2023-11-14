@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" value="" readonly id="Total" />
+                <input asp-for="Total" class="form-control" value="0.00" readonly id="Total" />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
             <br>
@@ -28,12 +28,12 @@
                 @foreach (var produto in ViewBag.Produtos)
                 {
                     <div style="display: flex; justify-content: space-between; padding-right: 10px;">
+                        <input type="hidden" name="ProdutoId" value="@produto.Id" />
                         <label>
-                            <input type="checkbox" name="ProdutoSelecionado" value="@produto.Id"
-                                data-preco="@produto.Preco" />
+                            @produto.Descricao - @produto.Preco.ToString("C")
                         </label>
-                        <label>@produto.Descricao</label>
-                        <label>@produto.Preco.ToString("C")</label>
+                        <input type="number" name="Quantidade" min="0" max="10" value="0" data-preco="@produto.Preco" />
+                        <input type="text" name="ValorTotal" id="ValorTotal" value="0.00" readonly />
                     </div>
                 }
             </div>
@@ -55,23 +55,33 @@
     }
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <script>
         $(document).ready(function () {
-            $('input[name="ProdutoSelecionado"]').change(function () {
-                calcularTotal();
+            $('input[name="Quantidade"]').change(function () {
+                calcularTotais();
             });
 
-            function calcularTotal() {
-                var total = 0;
+            function calcularTotais() {
+                var totalPedido = 0;
 
-                $('input[name="ProdutoSelecionado"]:checked').each(function () {
+                $('input[name="Quantidade"]').each(function () {
+                    var quantidade = parseInt($(this).val());
                     var preco = parseFloat($(this).data('preco'));
-                    if (!isNaN(preco)) {
-                        total += preco;
+
+                    if (!isNaN(quantidade) && !isNaN(preco)) {
+                        var totalProduto = quantidade * preco;
+                        totalPedido += totalProduto;
+
+                        // Encontrar elementos relacionados ao cálculo do total do produto
+                        var divProduto = $(this).closest('div');
+                        var totalProdutoElement = divProduto.find('input[name="ValorTotal"]');
+                        totalProdutoElement.val(totalProduto.toFixed(2));
                     }
                 });
 
-                $('#Total').val(total.toFixed(2));
+                // Atualizar o valor total do pedido
+                $('#Total').val(totalPedido.toFixed(2));
             }
         });
     </script>

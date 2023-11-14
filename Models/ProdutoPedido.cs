@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCurso.Models;
 
-public class Produto
+public class ProdutoPedido
 {
     [DisplayName("Código")]
     [Required(ErrorMessage = "Campo obrigatório")]
@@ -18,4 +18,18 @@ public class Produto
     [Required(ErrorMessage = "Campo obrigatório")]
     [PrecoValido(ErrorMessage = "Formato inválido. Use um número com até duas casas decimais.")]
     public decimal Preco { get; set; }
+
+    [DisplayName("Quantidade")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public int Quantidade { get; set; }
+
+    [DisplayName("Preço")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    [PrecoValido(ErrorMessage = "Formato inválido. Use um número com até duas casas decimais.")]
+    public decimal Total { get; set; }
+
+    [DisplayName("Pedido")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public int PedidoId { get; set; }
+    public Pedido Pedido { get; set; } = new();
 }

@@ -31,7 +31,7 @@
                     <div style="display: flex; justify-content: space-between; padding-right: 10px;">
                         <label>
                             <input type="checkbox" name="ProdutoSelecionado" value="@produto.Id" data-preco="@produto.Preco"
-                            @(Model.Produtos.Any(p => p.Id == produto.Id) ? "checked" : "") />
+                            @(Model.ProdutoPedidos.Any(p => p.Id == produto.Id) ? "checked" : "") />
                         </label>
                         <label>@produto.Descricao</label>
                         <label>@produto.Preco.ToString("C")</label>

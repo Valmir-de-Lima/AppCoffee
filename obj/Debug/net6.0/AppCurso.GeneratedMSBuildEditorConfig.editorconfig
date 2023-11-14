@@ -16,14 +16,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\dotnet\AppCoffee
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/dotnet/AppCoffee/AppCurso/Views/Pedido/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXBwQ3Vyc29cVmlld3NcUGVkaWRvXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/dotnet/AppCoffee/Areas/Identity/Pages/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/dotnet/AppCoffee/Views/Avaliacao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXZhbGlhY2FvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

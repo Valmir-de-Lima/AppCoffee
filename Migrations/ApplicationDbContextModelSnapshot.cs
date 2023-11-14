@@ -17,43 +17,6 @@ namespace AppCurso.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
-            modelBuilder.Entity("AppCurso.Models.Curso", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DuracaoEmHoras")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("DuracaoEmHoras")
-                        .HasComputedColumnSql("[DuracaoEmMinutos] / 60");
-
-                    b.Property<int>("DuracaoEmMinutos")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("DuracaoEmMinutos");
-
-                    b.Property<string>("Sumario")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Sumario");
-
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Titulo");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Curso", (string)null);
-                });
-
             modelBuilder.Entity("AppCurso.Models.Pagamento", b =>
                 {
                     b.Property<int>("Id")
@@ -157,6 +120,40 @@ namespace AppCurso.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Produto", (string)null);
+                });
+
+            modelBuilder.Entity("AppCurso.Models.ProdutoPedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Descricao");
+
+                    b.Property<int>("PedidoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Preco");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Quantidade");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Total");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PedidoId");
+
+                    b.ToTable("ProdutoPedido", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -355,26 +352,22 @@ namespace AppCurso.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PedidoProduto", b =>
-                {
-                    b.Property<int>("PedidosId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProdutosId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PedidosId", "ProdutosId");
-
-                    b.HasIndex("ProdutosId");
-
-                    b.ToTable("PedidoProduto", (string)null);
-                });
-
             modelBuilder.Entity("AppCurso.Models.Pagamento", b =>
                 {
                     b.HasOne("AppCurso.Models.Pedido", "Pedido")
                         .WithOne("Pagamento")
                         .HasForeignKey("AppCurso.Models.Pagamento", "PedidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pedido");
+                });
+
+            modelBuilder.Entity("AppCurso.Models.ProdutoPedido", b =>
+                {
+                    b.HasOne("AppCurso.Models.Pedido", "Pedido")
+                        .WithMany("ProdutoPedidos")
+                        .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -432,24 +425,11 @@ namespace AppCurso.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PedidoProduto", b =>
-                {
-                    b.HasOne("AppCurso.Models.Pedido", null)
-                        .WithMany()
-                        .HasForeignKey("PedidosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppCurso.Models.Produto", null)
-                        .WithMany()
-                        .HasForeignKey("ProdutosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AppCurso.Models.Pedido", b =>
                 {
                     b.Navigation("Pagamento");
+
+                    b.Navigation("ProdutoPedidos");
                 });
 #pragma warning restore 612, 618
         }

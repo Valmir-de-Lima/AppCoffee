@@ -49,23 +49,6 @@ namespace AppCurso.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Curso",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Titulo = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
-                    Tag = table.Column<string>(type: "TEXT", nullable: false),
-                    Sumario = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
-                    DuracaoEmMinutos = table.Column<int>(type: "INTEGER", nullable: false),
-                    DuracaoEmHoras = table.Column<int>(type: "INTEGER", nullable: false, computedColumnSql: "[DuracaoEmMinutos] / 60")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Curso", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Pedido",
                 columns: table => new
                 {
@@ -227,25 +210,24 @@ namespace AppCurso.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PedidoProduto",
+                name: "ProdutoPedido",
                 columns: table => new
                 {
-                    PedidosId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProdutosId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Descricao = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Preco = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Quantidade = table.Column<int>(type: "INTEGER", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PedidoId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PedidoProduto", x => new { x.PedidosId, x.ProdutosId });
+                    table.PrimaryKey("PK_ProdutoPedido", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PedidoProduto_Pedido_PedidosId",
-                        column: x => x.PedidosId,
+                        name: "FK_ProdutoPedido_Pedido_PedidoId",
+                        column: x => x.PedidoId,
                         principalTable: "Pedido",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PedidoProduto_Produto_ProdutosId",
-                        column: x => x.ProdutosId,
-                        principalTable: "Produto",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -304,9 +286,9 @@ namespace AppCurso.Migrations
                 column: "Cliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoProduto_ProdutosId",
-                table: "PedidoProduto",
-                column: "ProdutosId");
+                name: "IX_ProdutoPedido_PedidoId",
+                table: "ProdutoPedido",
+                column: "PedidoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -327,13 +309,13 @@ namespace AppCurso.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Curso");
-
-            migrationBuilder.DropTable(
                 name: "Pagamento");
 
             migrationBuilder.DropTable(
-                name: "PedidoProduto");
+                name: "Produto");
+
+            migrationBuilder.DropTable(
+                name: "ProdutoPedido");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -343,9 +325,6 @@ namespace AppCurso.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pedido");
-
-            migrationBuilder.DropTable(
-                name: "Produto");
         }
     }
 }
