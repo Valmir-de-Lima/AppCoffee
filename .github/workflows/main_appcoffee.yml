@@ -43,10 +43,10 @@ jobs:
         run: dotnet tool install --global dotnet-ef --version 6.0.0-* --add-source https://api.nuget.org/v3/index.json
 
       - name: Apply Migrations
-        run: dotnet ef migrations apply --project AppCurso
+        run: dotnet ef migrations add CreateDatabase
 
       - name: Update Database
-        run: dotnet ef database update --project AppCurso
+        run: dotnet ef database update
 
   deploy:
     runs-on: ubuntu-latest
