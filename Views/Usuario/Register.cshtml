@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Registrar";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="Register" method="post" class="mt-5">
+                <div class="text-danger">
+                    <!-- Exibir mensagens de validação aqui, se necessário -->
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Email" class="control-label">E-mail:</label>
+                    <input type="text" name="Email" class="form-control" />
+                    <!-- Exibir mensagens de validação para Email aqui, se necessário -->
+                    @Html.ValidationMessage("Email", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Senha" class="control-label">Senha:</label>
+                    <input type="password" name="Senha" class="form-control" />
+                    <!-- Exibir mensagens de validação para Senha aqui, se necessário -->
+                    @Html.ValidationMessage("Senha", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label for="ConfirmacaoSenha" class="control-label">Confirmar Senha:</label>
+                    <input type="password" name="ConfirmacaoSenha" class="form-control" />
+                    <!-- Exibir mensagens de validação para ConfirmacaoSenha aqui, se necessário -->
+                    @Html.ValidationMessage("ConfirmacaoSenha", "", new { @class = "text-danger" })
+                </div>
+
+                <br>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" id="btnRegistrar" disabled>Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Função para habilitar/desabilitar o botão de Registrar
+            function atualizarBotaoRegistrar() {
+                var btnRegistrar = $('#btnRegistrar');
+                btnRegistrar.prop('disabled', $.trim($('input[name="Email"]').val()) === '' || $.trim($('input[name="Senha"]').val()) === '' || $.trim($('input[name="ConfirmacaoSenha"]').val()) === '');
+            }
+
+            // Atualiza o botão ao digitar nos campos
+            $('input[name="Email"], input[name="Senha"], input[name="ConfirmacaoSenha"]').on('input', function () {
+                atualizarBotaoRegistrar();
+            });
+
+            // Atualiza o botão ao perder o foco dos campos
+            $('input[name="Email"], input[name="Senha"], input[name="ConfirmacaoSenha"]').on('blur', function () {
+                atualizarBotaoRegistrar();
+            });
+        });
+    </script>
+}

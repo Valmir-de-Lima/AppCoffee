@@ -82,6 +82,20 @@ namespace AppCurso.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Senha = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -290,6 +304,11 @@ namespace AppCurso.Migrations
                 name: "IX_ProdutoPedido_PedidoId",
                 table: "ProdutoPedido",
                 column: "PedidoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuario_Senha",
+                table: "Usuario",
+                column: "Senha");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -317,6 +336,9 @@ namespace AppCurso.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProdutoPedido");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

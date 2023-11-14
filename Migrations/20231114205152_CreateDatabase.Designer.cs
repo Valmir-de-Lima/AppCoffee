@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppCurso.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231114164723_CreateDatabase")]
+    [Migration("20231114205152_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,31 @@ namespace AppCurso.Migrations
                     b.HasIndex("PedidoId");
 
                     b.ToTable("ProdutoPedido", (string)null);
+                });
+
+            modelBuilder.Entity("AppCurso.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Senha");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Senha" }, "IX_Usuario_Senha");
+
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
