@@ -7,9 +7,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form asp-controller="Usuario" asp-action="Login" method="post" class="mt-5">
-                <div asp-validation-summary="All" class="text-danger"></div>
-
+            <h3 class="text-center">Login</h3>
+            <hr>
+            @if (ViewData.ModelState.TryGetValue(string.Empty, out var modelErrors) && modelErrors.Errors.Any())
+            {
+                <div class="text-danger">
+                    <p>@modelErrors.Errors.First().ErrorMessage</p>
+                </div>
+            }
+            <form asp-controller="Usuario" asp-action="Index" method="post" class="mt-5" novalidate>
                 <div class="form-group">
                     <label asp-for="Email" class="control-label">E-mail:</label>
                     <input asp-for="Email" class="form-control" />
@@ -21,7 +27,7 @@
                     <input asp-for="Senha" type="password" class="form-control" />
                     <span asp-validation-for="Senha" class="text-danger"></span>
                 </div>
-
+                <br>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Entrar</button>
                 </div>

@@ -8,7 +8,6 @@ namespace AppCurso.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<Usuario>? Usuarios { get; set; }
     public DbSet<Pedido>? Pedidos { get; set; }
     public DbSet<ProdutoPedido>? ProdutoPedidos { get; set; }
     public DbSet<Produto>? Produtos { get; set; }
@@ -21,7 +20,6 @@ public class ApplicationDbContext : IdentityDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfiguration(new UsuarioMap());
         modelBuilder.ApplyConfiguration(new ProdutoMap());
         modelBuilder.ApplyConfiguration(new PedidoMap());
         modelBuilder.ApplyConfiguration(new ProdutoPedidoMap());

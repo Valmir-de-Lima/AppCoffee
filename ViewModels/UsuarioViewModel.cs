@@ -18,6 +18,7 @@ namespace AppCurso.ViewModels
         [Required(ErrorMessage = "Campo obrigatório")]
         [StringLength(100, ErrorMessage = "A senha deve ter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$", ErrorMessage = "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um caractere especial e um número.")]
         public string Senha { get; set; } = "";
 
         [DisplayName("Confirmar Senha")]

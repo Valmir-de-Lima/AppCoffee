@@ -4,7 +4,7 @@
     ViewData["Title"] = "Listagem dos Pedidos";
 }
 
-<h1>Listagem dos Pedidos</h1>
+<h3>Listagem dos Pedidos</h3>
 <p>
     <a asp-action="Create">Criar um novo Pedido</a>
 </p>
@@ -73,22 +73,34 @@
                     </td>
                 </tr>
     }
-            <td style="color: #df6919;">
+            <td style="color: #df6919; font-size: 1.1em;">
                 @if (pedido.Status == "Pedido criado. Aguardando pagamento")
                 {
-                    <a asp-action="Edit" asp-route-id="@pedido.Id" style="color: #df6919;">Editar</a><a style="color: #df6919;">  |  </a>
-                    <a asp-action="Delete" asp-route-id="@pedido.Id" style="color: #df6919;">Deletar</a><a style="color: #df6919;">  |  </a>
-                    <a asp-action="Payment" asp-route-id="@pedido.Id" style="color: #df6919;">Pagar</a><a style="color: #df6919;">  |  </a>
+                    <span style="margin-right: 5px;">
+                        <a asp-action="Edit" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Editar</a>
+                    </span>
+                    <span style="margin-right: 5px;">
+                        <a asp-action="Delete" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Deletar</a>
+                    </span>
+                    <span style="margin-right: 5px;">
+                        <a asp-action="Payment" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Pagar</a>
+                    </span>
                 }
                 @if (pedido.Status == "Pedido pago. Aguardando recebimento")
                 {
-                    <a asp-action="Recept" asp-route-id="@pedido.Id" style="color: #df6919;">Receber</a><a style="color: #df6919;">  |  </a>
+                    <span style="margin-right: 5px;">
+                        <a asp-action="Recept" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Receber</a>
+                    </span>
                 }
                 @if (pedido.Status == "Pedido recebido. Aguardando avaliacao")
                 {
-                    <a asp-action="Assess" asp-route-id="@pedido.Id" style="color: #df6919;">Avaliar</a><a style="color: #df6919;">  |  </a>
+                    <span style="margin-right: 5px;">
+                        <a asp-action="Assess" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Avaliar</a>
+                    </span>
                 }
-                <a asp-action="Details" asp-route-id="@pedido.Id" style="color: #df6919;">Detalhar</a>
+                <span style="margin-right: 5px;">
+                    <a asp-action="Details" asp-route-id="@pedido.Id" style="color: #df6919; text-decoration: underline;">Detalhar</a>
+                </span>
             </td>
         </tbody>
     </table>

@@ -17,13 +17,11 @@ namespace AppCurso
 {
     public class UsuarioController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UsuarioController(ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public UsuarioController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -37,15 +35,21 @@ namespace AppCurso
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string senha)
+        public async Task<IActionResult> Index(UsuarioViewModel usuarioViewModel)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            if (usuarioViewModel.Email == null || usuarioViewModel.Senha == null)
+            {
+                ModelState.AddModelError(string.Empty, "É necessário e-mail e senha.");
+                return View(usuarioViewModel); // Volte para a tela de login
+            }
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, senha))
+            var user = await _userManager.FindByEmailAsync(usuarioViewModel.Email);
+
+            if (user == null || !await _userManager.CheckPasswordAsync(user, usuarioViewModel.Senha))
             {
                 // Falha na autenticação, exiba uma mensagem de erro
                 ModelState.AddModelError(string.Empty, "Usuário ou senha inválidos.");
-                return RedirectToAction("Index", "Usuario"); // Volte para a tela de login
+                return View(usuarioViewModel); // Volte para a tela de login
             }
 
             // Use o ASP.NET Core Identity para autenticar o usuário
@@ -62,26 +66,26 @@ namespace AppCurso
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string email, string senha)
+        public async Task<IActionResult> Register(UsuarioViewModel usuarioViewModel)
         {
             // Verifica se o modelo é válido
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(usuarioViewModel);
             }
 
             try
             {
                 // Verifica se o e-mail já está em uso
-                if (await _userManager.FindByEmailAsync(email) != null)
+                if (await _userManager.FindByEmailAsync(usuarioViewModel.Email) != null)
                 {
                     ModelState.AddModelError(string.Empty, "O e-mail já está em uso.");
-                    return View();
+                    return View(usuarioViewModel);
                 }
 
                 // Cria um novo usuário
-                var user = new IdentityUser { UserName = email, Email = email };
-                var result = await _userManager.CreateAsync(user, senha);
+                var user = new IdentityUser { UserName = usuarioViewModel.Email, Email = usuarioViewModel.Email };
+                var result = await _userManager.CreateAsync(user, usuarioViewModel.Senha);
 
                 if (result.Succeeded)
                 {
@@ -93,20 +97,16 @@ namespace AppCurso
                 }
                 else
                 {
-                    // Se houver erros durante a criação do usuário, adicione-os ao ModelState
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    ModelState.AddModelError(string.Empty, "Erro ao registrar o usuário");
 
-                    return View();
+                    return View(usuarioViewModel);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Trate a exceção de maneira adequada (log, mensagem, etc.)
-                ModelState.AddModelError(string.Empty, "Erro ao registrar o usuário: " + ex);
-                return View();
+                ModelState.AddModelError(string.Empty, "Erro ao registrar o usuário: ");
+                return View(usuarioViewModel);
             }
         }
 

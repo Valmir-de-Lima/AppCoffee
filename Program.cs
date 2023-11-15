@@ -15,7 +15,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Usuario/Index"; // Caminho para a página de login
+    options.AccessDeniedPath = "/Usuario/Index"; // Caminho para a página de acesso negado
+});
 
 builder.Services.AddControllersWithViews();
 
